@@ -23,7 +23,8 @@ ItemsRouter
             type,
             medium,
             description,
-            favorite
+            favorite,
+            user_id
         } = req.body
         const newItem = {
             name,
@@ -32,7 +33,8 @@ ItemsRouter
             type,
             medium,
             description,
-            favorite
+            favorite,
+            user_id
         }
 
         for (const [key, value] of Object.entries(newItem))
@@ -41,7 +43,7 @@ ItemsRouter
                     error: `Missing '${key}' in request body`
                 })
         
-        newItem.user_id = req.user.id
+        // newItem.user_id = req.user.id
 
         ItemsService.insertItem(
             req.app.get('db'),
@@ -50,7 +52,7 @@ ItemsRouter
             .then(item => {
                 res
                     .status(201)
-                    .location(path.posix.join(req.originalUrl, `/${item.id}`))
+                    .location(`${req.originalUrl}/${item.id}`)
                     .json(ItemsService.serializeItem(item))
             })
             .catch(next)
