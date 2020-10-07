@@ -50,6 +50,7 @@ ItemsRouter
             newItem
         )
             .then(item => {
+                console.log(item)
                 console.log(`${req.originalUrl}/${item.id}`);
                 res
                     .status(201)

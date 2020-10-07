@@ -15,13 +15,16 @@ const ItemsService = {
     },
 
     insertItem(db, newItem){
+        console.log(db)
+        console.log('NEW ITEM', newItem)
         return db
             .insert(newItem)
             .into('items')
             .returning('*')
-            .then(([item]) => item)
+            // .then(([item]) => item)
             .then(item => 
-                ItemsService.getById(db, item.id)
+                // ItemsService.getById(db, item.id)
+                item[0]
             )
     },
 
