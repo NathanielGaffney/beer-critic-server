@@ -15,17 +15,34 @@ const ItemsService = {
     },
 
     insertItem(db, newItem){
-        console.log(db)
-        console.log('NEW ITEM', newItem)
         return db
             .insert(newItem)
             .into('items')
             .returning('*')
-            // .then(([item]) => item)
             .then(item => 
-                // ItemsService.getById(db, item.id)
                 item[0]
             )
+    },
+
+    updateItem(db, id, updatedItem){
+        return db('items')
+            .where('id', id)
+            .update(updatedItem)
+            .returning('*')
+            .then(item =>
+                item[0]
+            )
+    },
+
+    deleteItem(db, id){
+        return db('items')
+            .where('id', id)
+            .delete()
+            .returning('*')
+            .then(item =>
+                item[0]    
+            )
+            
     },
 
     serializeItem(item) {
@@ -38,7 +55,8 @@ const ItemsService = {
             medium: xss(item.medium),
             user_id: Number(item.user_id),
             date_modified: new Date(item.date_modified),
-            description: xss(item.description)
+            description: xss(item.description),
+            favorite: (item.favorite)
         }
     },
 }

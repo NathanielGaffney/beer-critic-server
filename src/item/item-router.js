@@ -1,6 +1,7 @@
 const express = require('express')
 const ItemsService = require('./item-service')
-const { requireAuth } = require('../middleware/jwt-auth')
+const { requireAuth } = require('../middleware/jwt-auth');
+const { updateItem } = require('./item-service');
 
 const ItemsRouter = express.Router()
 const jsonBodyParser = express.json();
@@ -42,7 +43,7 @@ ItemsRouter
                 return res.status(400).json({
                     error: `Missing '${key}' in request body`
                 })
-        
+
         // newItem.user_id = req.user.id
 
         ItemsService.insertItem(
@@ -66,6 +67,33 @@ ItemsRouter
     .all(checkItemExists)
     .get((req, res) => {
         res.json(ItemsService.serializeItem(res.item))
+    })
+    .patch(jsonBodyParser, (req, res, next) => {
+        const patchItem = req.body
+
+        // for (const [key, value] of Object.entries(changes))
+        //     if (value == !null) {
+        //         patchItem[key] = key
+        //     }
+
+        const id = req.params.id
+        ItemsService.updateItem((req.app.get('db')), id, patchItem)
+            .then(item => {
+                res
+                    .status(200)
+                    .json(ItemsService.serializeItem(item))
+            })
+            .catch(next)
+    })
+    .delete((req, res, next) => {
+        const id = req.params.id
+        ItemsService.deleteItem((req.app.get('db')), id)
+            .then(item => {
+                res
+                    .status(200)
+                    .json({"message": `Item at id ${id} successfully deleted.`, "item": item})
+            })
+            .catch(next)
     })
 
 /* async/await syntax for promises */
