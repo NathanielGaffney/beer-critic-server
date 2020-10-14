@@ -6,8 +6,8 @@ const jsonBodyParser = express.json()
 
 authRouter
   .post('/login', jsonBodyParser, (req, res, next) => {
-    const { user_name, password } = req.body
-    const loginUser = { user_name, password }
+    const { username, password } = req.body
+    const loginUser = { username, password }
 
     for (const [key, value] of Object.entries(loginUser))
       if (value == null)
@@ -17,7 +17,7 @@ authRouter
 
     AuthService.getUserWithUserName(
       req.app.get('db'),
-      loginUser.user_name
+      loginUser.username
     )
       .then(dbUser => {
         if (!dbUser) {
@@ -32,7 +32,7 @@ authRouter
                 error: `Incorrect user_name or password`,
               })
             }
-            const sub = dbUser.user_name
+            const sub = dbUser.username
             const payload = { user_id: dbUser.id }
             res.send({
               authToken: AuthService.createJwt(sub, payload),

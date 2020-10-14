@@ -8,7 +8,7 @@ const jsonBodyParser = express.json();
 
 ItemsRouter
     .route('/items')
-    // .all(requireAuth)
+    .all(requireAuth)
     .get((req, res, next) => {
         ItemsService.getAllItems(req.app.get('db'))
             .then(items => {
@@ -51,7 +51,6 @@ ItemsRouter
             newItem
         )
             .then(item => {
-                console.log(item)
                 console.log(`${req.originalUrl}/${item.id}`);
                 res
                     .status(201)
