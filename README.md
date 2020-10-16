@@ -7,7 +7,7 @@ The api can be reached at https://limitless-coast-38251.herokuapp.com/api
 Endpoints
 
 /api/user
-    POST:  { username, password }
+>    POST:  { username, password }
 
 /api/items (requires authorization)
 >    GET:   returns all items in database
