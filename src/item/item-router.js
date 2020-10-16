@@ -1,7 +1,6 @@
 const express = require('express')
 const ItemsService = require('./item-service')
 const { requireAuth } = require('../middleware/jwt-auth');
-const { updateItem } = require('./item-service');
 
 const ItemsRouter = express.Router()
 const jsonBodyParser = express.json();
@@ -44,8 +43,6 @@ ItemsRouter
                     error: `Missing '${key}' in request body`
                 })
 
-        // newItem.user_id = req.user.id
-
         ItemsService.insertItem(
             req.app.get('db'),
             newItem
@@ -62,18 +59,13 @@ ItemsRouter
 
 ItemsRouter
     .route('/items/:id')
-    // .all(requireAuth)
+    .all(requireAuth)
     .all(checkItemExists)
     .get((req, res) => {
         res.json(ItemsService.serializeItem(res.item))
     })
     .patch(jsonBodyParser, (req, res, next) => {
         const patchItem = req.body
-
-        // for (const [key, value] of Object.entries(changes))
-        //     if (value == !null) {
-        //         patchItem[key] = key
-        //     }
 
         const id = req.params.id
         ItemsService.updateItem((req.app.get('db')), id, patchItem)
@@ -95,7 +87,6 @@ ItemsRouter
             .catch(next)
     })
 
-/* async/await syntax for promises */
 async function checkItemExists(req, res, next) {
     try {
         const item = await ItemsService.getById(

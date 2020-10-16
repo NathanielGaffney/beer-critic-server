@@ -5,7 +5,6 @@ const ItemsService = {
         return db
             .from('items')
             .select('*')
-            // .where('user_id', user_id)
     },
 
     getById(db, id) {
