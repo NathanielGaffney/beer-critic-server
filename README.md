@@ -1,10 +1,14 @@
 Beer Critic Server
+==================
 
 This is the server side of the beer critic application.
 
 The api can be reached at https://limitless-coast-38251.herokuapp.com/api
 
+The client can be reached at https://beer-critic-client.vercel.app/
+
 Endpoints
+---------
 
 /api/user
 >    POST:  { username, password }
