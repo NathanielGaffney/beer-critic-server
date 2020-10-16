@@ -8,9 +8,11 @@ The api can be reached at https://limitless-coast-38251.herokuapp.com/api
 The client can be reached at https://beer-critic-client.vercel.
 app/
 
-Dummy User Account
-username: testUser
-password: password
+>Dummy User Account
+>
+>username: testUser
+>
+>password: password
 
 Endpoints
 ---------
