@@ -10,9 +10,9 @@ Endpoints
     POST:  { username, password }
 
 /api/items (requires authorization)
-    GET:   returns all items in database
-
-    POST:   {
+>    GET:   returns all items in database
+>
+>    POST:   {
             name,
             rating,
             price,
@@ -24,9 +24,9 @@ Endpoints
         }
 
 /api/items/:itemId (requires authorization)
-    GET: requires id in params, e.g. "/items/2"
-
-    PATCH: requires id in params, and any of the below items to be changed.
+>    GET: requires id in params, e.g. "/items/2"
+>
+>    PATCH: requires id in params, and any of the below items to be changed.
 
         {
             name,
@@ -38,5 +38,5 @@ Endpoints
             favorite,
             user_id
         }
-
-    DELETE: requires id in params
+>
+>    DELETE: requires id in params
