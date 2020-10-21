@@ -14,6 +14,19 @@ app/
 >
 >password: password
 
+Tech Stack
+----------
+
+Front end
+* React
+* Vercel
+
+Back end
+* Express
+* knex
+* postgresql
+* heroku
+
 Endpoints
 ---------
 
