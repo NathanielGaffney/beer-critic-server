@@ -1,6 +1,6 @@
 const express = require('express')
 const ItemsService = require('./item-service')
-const { requireAuth } = require('../middleware/jwt-auth');
+const { requireAuth, tokenUser } = require('../middleware/jwt-auth');
 
 const ItemsRouter = express.Router()
 const jsonBodyParser = express.json();
@@ -9,7 +9,11 @@ ItemsRouter
     .route('/items')
     .all(requireAuth)
     .get((req, res, next) => {
-        ItemsService.getAllItems(req.app.get('db'))
+        // const { user_id } = req.query;
+        // tokenUser();
+        const user_id = req.user_id
+        // console.log(req.query)
+        ItemsService.getAllItems(req.app.get('db'), user_id)
             .then(items => {
                 res.json(items.map(ItemsService.serializeItem))
             })
@@ -23,8 +27,7 @@ ItemsRouter
             type,
             medium,
             description,
-            favorite,
-            user_id
+            favorite
         } = req.body
         const newItem = {
             name,
@@ -33,8 +36,7 @@ ItemsRouter
             type,
             medium,
             description,
-            favorite,
-            user_id
+            favorite
         }
 
         for (const [key, value] of Object.entries(newItem))
@@ -42,6 +44,8 @@ ItemsRouter
                 return res.status(400).json({
                     error: `Missing '${key}' in request body`
                 })
+
+        newItem.user_id = req.user_id;
 
         ItemsService.insertItem(
             req.app.get('db'),
@@ -66,6 +70,7 @@ ItemsRouter
     })
     .patch(jsonBodyParser, (req, res, next) => {
         const patchItem = req.body
+        patchItem.user_id = req.user_id
 
         const id = req.params.id
         ItemsService.updateItem((req.app.get('db')), id, patchItem)
@@ -91,7 +96,8 @@ async function checkItemExists(req, res, next) {
     try {
         const item = await ItemsService.getById(
             req.app.get('db'),
-            req.params.id
+            req.params.id,
+            req.user_id
         )
 
         if (!item)

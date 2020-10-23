@@ -5,10 +5,11 @@ const ItemsService = {
         return db
             .from('items')
             .select('*')
+            .where('user_id', user_id)
     },
 
-    getById(db, id) {
-        return ItemsService.getAllItems(db)
+    getById(db, id, user_id) {
+        return ItemsService.getAllItems(db, user_id)
             .where('id', id)
             .first()
     },
