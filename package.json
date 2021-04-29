@@ -4,7 +4,7 @@
   "description": "",
   "engines": {
     "node": "12.18.3"
-  }
+  },
   "main": "index.js",
   "scripts": {
     "test": "mocha --require test/setup.js",
