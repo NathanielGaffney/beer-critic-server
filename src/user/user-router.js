@@ -30,5 +30,8 @@ UserRouter
                     .catch(next)
             })
     })
+    .get((req,res,next) => {
+        res.status(200).json('hi there');
+    })
 
 module.exports = UserRouter
